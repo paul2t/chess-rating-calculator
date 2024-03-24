@@ -1,0 +1,44 @@
+html {
+    text-align: center;
+}
+body {
+    color: #eee;
+    background: #121212;
+    font-size: 3vmax;
+}
+
+a.title {
+    color: white;
+    text-decoration: none;
+}
+
+label{
+    /* display: table-cell; */
+    text-align: right;
+}
+/* input {
+  display: table-cell;
+} */
+/* div.row{
+    display: table-row;
+} */
+
+#input-player-rating {
+    font-size: 3vmax;
+}
+
+#input-opponent-rating {
+    font-size: 3vmax;
+}
+
+#input-score {
+    font-size: 3vmax;
+}
+
+#input-k-factor {
+    font-size: 3vmax;
+}
+
+.footer {
+    font-size: 1.5vmax;
+}

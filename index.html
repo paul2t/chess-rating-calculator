@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+    <title>Chess rating calculator</title>
+    <link rel="stylesheet" href="ratings-calculator.css">
+</head>
+<body>
+    <h1><a href="?" class="title">FIDE Chess rating calculator</a></h1>
+
+    <div id="cols">
+        <div class="row">
+            <label for="input-player-rating">Your rating</label>
+            <input id="input-player-rating" type="number" min="0" max="5000" value="2000" step="50"/>
+        </div>
+
+        <div class="row">
+            <label for="input-opponent-rating">Opponent</label>
+            <input id="input-opponent-rating" type="number" min="0" max="5000" value="2000" step="50"/>
+        </div>
+
+        <div class="row">
+            <label for="input-score">Score</label>
+            <select id="input-score">
+                <option value="1">win (1)</option>
+                <option value="0.5" selected>draw (1/2)</option>
+                <option value="0">loss (0)</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <label for="input-k-factor">K</label>
+            <select id="input-k-factor">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="40" selected>40</option>
+            </select>
+        </div>
+    </div>
+    
+    <br/><br/>
+
+    <p>You <span id="output-win-lose">win</span> <span id="output-score-change">0</span><br/>
+        Your new elo will be: <span id="output-new-score">2000</span>
+    </p>
+
+    <div class="footer">
+        <p>
+            Source code <a href="https://github.com/paul2t/chess-rating-calculator">github.com/paul2t/chess-rating-calculator</a><br/>
+            The rating change is calculated using the following formula:<br/>
+            K * (score - (1 / (1 + Math.pow(10, (opponent_rating - player_rating) / 400))))
+        </p>
+    </div>
+
+    <script src="ratings-calculator.js"></script>
+</body>
