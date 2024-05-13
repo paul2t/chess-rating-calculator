@@ -96,11 +96,11 @@ function update_ratings_with(player_rating, opponent_rating, score, k_factor) {
     const output_new_rating = document.getElementById("output-new-score");
 
     const rating_change = compute_rating_change(player_rating, opponent_rating, score, k_factor);
-    last_rating_change = rating_change;
+    last_rating_change = rating_change / k_factor;
 
     let accum_rating_change = rating_change;
     for (const it of accumulator) {
-        accum_rating_change += it;
+        accum_rating_change += it * k_factor;
     }
 
     const new_rating = +player_rating + accum_rating_change;
@@ -115,7 +115,7 @@ function update_ratings_with(player_rating, opponent_rating, score, k_factor) {
     if (accumulator.length > 0) {
         let first = true;
         for (const it of accumulator) {
-            append_chg(output_rating_change, it, first);
+            append_chg(output_rating_change, it * k_factor, first);
             first = false;
         }
         append_chg(output_rating_change, rating_change, first);
