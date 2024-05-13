@@ -9,17 +9,17 @@
     <div id="cols">
         <div class="row">
             <label for="input-player-rating">Your rating</label>
-            <input id="input-player-rating" type="number" min="0" max="5000" value="2000" step="50"/>
+            <input id="input-player-rating" class="input" type="number" min="0" max="5000" value="2000" step="50"/>
         </div>
 
         <div class="row">
             <label for="input-opponent-rating">Opponent</label>
-            <input id="input-opponent-rating" type="number" min="0" max="5000" value="2000" step="50"/>
+            <input id="input-opponent-rating" class="input" type="number" min="0" max="5000" value="2000" step="50"/>
         </div>
 
         <div class="row">
             <label for="input-score">Score</label>
-            <select id="input-score">
+            <select id="input-score" class="input">
                 <option value="1">win (1)</option>
                 <option value="0.5" selected>draw (1/2)</option>
                 <option value="0">loss (0)</option>
@@ -28,16 +28,21 @@
 
         <div class="row">
             <label for="input-k-factor">K</label>
-            <select id="input-k-factor">
+            <select id="input-k-factor" class="input">
                 <option value="10">10</option>
                 <option value="15">15</option>
                 <option value="20">20</option>
                 <option value="40" selected>40</option>
             </select>
         </div>
+        
+        <div class="row">
+            <button id="input-accumulate" class="input">Accumulate</button>
+            <button id="input-decumulate" class="input">Dec</button>
+        </div>
     </div>
     
-    <p>You <span id="output-win-lose">win</span> <span id="output-score-change">0</span> points.<br/>
+    <p>You <span id="output-win-lose">win</span> <span id="output-score-change">0</span><span id="output-accumulator"></span> points.<br/>
         Your new elo will be: <span id="output-new-score">2000</span>.
     </p>
 

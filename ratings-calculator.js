@@ -1,12 +1,24 @@
 
-
+var accumulator=new Array();
+var last_rating_change=0.0;
 
 document.getElementById("input-player-rating").addEventListener("change", (event) => on_ratings_params_changed());
 document.getElementById("input-opponent-rating").addEventListener("change", (event) => on_ratings_params_changed());
 document.getElementById("input-score").addEventListener("change", (event) => on_ratings_params_changed());
 document.getElementById("input-k-factor").addEventListener("change", (event) => on_ratings_params_changed());
+document.getElementById("input-accumulate").addEventListener("click", (event) => on_accumulate());
+document.getElementById("input-decumulate").addEventListener("click", (event) => on_decumulate());
 init_from_url_parameter();
 
+function on_accumulate() {
+    accumulator.push(last_rating_change);
+    on_ratings_params_changed();
+}
+
+function on_decumulate() {
+    accumulator.pop();
+    on_ratings_params_changed();
+}
 
 function init_from_url_parameter() {
     const query_string = window.location.search;
@@ -15,6 +27,7 @@ function init_from_url_parameter() {
     const opponent = url_params.get('opponent');
     const score = url_params.get('score');
     const k = url_params.get('k');
+    const accum = url_params.get('accum');
     
     if (rating != null)
         document.getElementById("input-player-rating").value = rating;
@@ -24,6 +37,8 @@ function init_from_url_parameter() {
         document.getElementById("input-score").value = score;
     if (k != null)
         document.getElementById("input-k-factor").value = k;
+    if (accum != null && accum.length > 0)
+        accumulator = accum.split(';').map(Number);
 
     update_ratings();
 }
@@ -43,6 +58,8 @@ function on_ratings_params_changed() {
         params.set('score', input_score)
     if (input_k_factor != "")
         params.set('k', input_k_factor)
+    if (input_k_factor != "")
+        params.set('accum', accumulator.join(';'))
     const new_url = `${location.pathname}?${params}`;
     history.replaceState(null, '', new_url);
 
@@ -58,20 +75,54 @@ function update_ratings() {
     update_ratings_with(input_player_rating, input_opponent_rating, input_score, input_k_factor);
 }
 
+function append_chg(output, value, first = false) {
+    if (value >= 0) {
+        if (!first)
+            output.innerText += " + ";
+    }
+    else {
+        if (first)
+            output.innerText += " -";
+        else
+            output.innerText += " - ";
+    }
+    const gain = Math.abs(value);
+    output.innerText += gain.toFixed(1);
+}
+
 function update_ratings_with(player_rating, opponent_rating, score, k_factor) {
     const output_win_lose = document.getElementById("output-win-lose");
     const output_rating_change = document.getElementById("output-score-change");
     const output_new_rating = document.getElementById("output-new-score");
 
     const rating_change = compute_rating_change(player_rating, opponent_rating, score, k_factor);
-    const new_rating = +player_rating + rating_change;
+    last_rating_change = rating_change;
 
-    if (rating_change >= 0)
+    let accum_rating_change = rating_change;
+    for (const it of accumulator) {
+        accum_rating_change += it;
+    }
+
+    const new_rating = +player_rating + accum_rating_change;
+
+    if (accum_rating_change >= 0)
         output_win_lose.innerText = "win";
     else
         output_win_lose.innerText = "lose";
     const gain = Math.abs(new_rating - player_rating);
-    output_rating_change.innerText = gain.toFixed(0);
+
+    output_rating_change.innerText = "";
+    if (accumulator.length > 0) {
+        let first = true;
+        for (const it of accumulator) {
+            append_chg(output_rating_change, it, first);
+            first = false;
+        }
+        append_chg(output_rating_change, rating_change, first);
+        output_rating_change.innerText += " = ";
+    }
+    output_rating_change.innerText += gain.toFixed(1);
+    
     output_new_rating.innerText = new_rating.toFixed(0);
 }
 

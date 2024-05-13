@@ -23,19 +23,7 @@ label{
     display: table-row;
 } */
 
-#input-player-rating {
-    font-size: 3vmax;
-}
-
-#input-opponent-rating {
-    font-size: 3vmax;
-}
-
-#input-score {
-    font-size: 3vmax;
-}
-
-#input-k-factor {
+.input {
     font-size: 3vmax;
 }
 
